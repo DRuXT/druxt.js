@@ -3186,6 +3186,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"axios@npm:^0.21.4":
+  version: 0.21.4
+  resolution: "axios@npm:0.21.4"
+  dependencies:
+    follow-redirects: ^1.14.0
+  checksum: 44245f24ac971e7458f3120c92f9d66d1fc695e8b97019139de5b0cc65d9b8104647db01e5f46917728edfc0cfd88eb30fc4c55e6053eef4ace76768ce95ff3c
+  languageName: node
+  linkType: hard
+
 "babel-code-frame@npm:^6.26.0":
   version: 6.26.0
   resolution: "babel-code-frame@npm:6.26.0"
@@ -4958,7 +4967,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "druxt@workspace:packages/druxt"
   dependencies:
-    axios: ^0.21.1
+    axios: ^0.21.4
     core-js: ^3.16.1
     deepmerge: ^4.2.2
     drupal-jsonapi-params: ^1.2.1
@@ -4967,6 +4976,8 @@ __metadata:
     scule: ^0.2.0
     vue: ^2.6.14
     vuex: ^3.6.2
+  peerDependencies:
+    "@nuxtjs/axios": ^5.13.6
   dependenciesMeta:
     core-js:
       optional: true
@@ -5728,6 +5739,16 @@ __metadata:
     debug:
       optional: true
   checksum: 7381a55bdc6951c5c1ab73a8da99d9fa4c0496ce72dba92cd2ac2babe0e3ebde9b81c5bca889498ad95984bc773d713284ca2bb17f1b1e1416e5f6531e39a488
+  languageName: node
+  linkType: hard
+
+"follow-redirects@npm:^1.14.0":
+  version: 1.14.4
+  resolution: "follow-redirects@npm:1.14.4"
+  peerDependenciesMeta:
+    debug:
+      optional: true
+  checksum: d4ce74cf5c6f363168b97e706b914eb9ffb6bf4d4c6d8f8330b93088d9b90e566611ddbcf0e42c8ed5fd17598dfeda1d19230d3e9d6d6c6b4d1c10ec3a0b99be
   languageName: node
   linkType: hard
 
