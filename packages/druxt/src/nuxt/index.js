@@ -1,4 +1,4 @@
-import { addPluginTemplate, addTemplate, defineNuxtModule, installModule } from '@nuxt/kit'
+import { addPluginTemplate, addTemplate, defineNuxtModule, extendRouteRules, installModule, isNuxt2 } from '@nuxt/kit'
 import chalk from 'chalk'
 import { DrupalJsonApiParams } from 'drupal-jsonapi-params'
 import { join, normalize, resolve } from 'path'
@@ -55,30 +55,30 @@ const DruxtNuxtModule = defineNuxtModule({
     nuxt.options.baseUrl = options.baseUrl = options.baseUrl.endsWith('/') ? options.baseUrl.slice(0, -1) : options.baseUrl
     nuxt.options.endpoint = options.endpoint = options.endpoint.startsWith('/') ? options.endpoint : `/${options.endpoint}`
 
-    const druxt = new DruxtClient(options.baseUrl, {
-      ...options,
-      // Disable API Proxy, as Proxies aren't available at build.
-      proxy: { ...options.proxy || {}, api: false },
-    })
-
-    // Nuxt proxy integration.
+    // Proxy integration.
     if (options.proxy) {
       const proxies = {}
 
       // Enable proxying of the API endpoint.
       // This is primarily used to avoid CORS errors.
       if (options.proxy?.api) {
+        const druxt = new DruxtClient(options.baseUrl, {
+          ...options,
+          // Disable API Proxy, as Proxies aren't available at build.
+          proxy: { ...options.proxy, api: false },
+        })
+
         // Main API Endpoint.
         proxies[options.endpoint] = options.baseUrl
 
         // Langcode prefixed API endpoints.
         const languageResourceType = 'configurable_language--configurable_language'
-        if (((await druxt.getIndex(languageResourceType)) || {}).href) {
+        if ((await druxt.getIndex(languageResourceType))?.href) {
           const query = new DrupalJsonApiParams().addFields(languageResourceType, ['drupal_internal__id'])
           const languages = (await druxt.getCollectionAll(languageResourceType, query) || [])
             .map((o) => o.data)
             .flat()
-            .filter((o) => !['und', 'zxx'].includes(((o || {}).attributes || {}).drupal_internal__id))
+            .filter((o) => !['und', 'zxx'].includes(o?.attributes?.drupal_internal__id))
             .map((o) => o.attributes.drupal_internal__id)
           for (const langcode of languages) {
             proxies[`/${langcode}${options.endpoint}`] = options.baseUrl
@@ -95,109 +95,137 @@ const DruxtNuxtModule = defineNuxtModule({
         proxies[`/sites/${filesPath}/files`] = options.baseUrl
       }
 
-      // If there are existing proxy settings, merge in the appropriate format.
-      if (nuxt.options.proxy) {
-        if (Array.isArray(nuxt.options.proxy)) {
-          nuxt.options.proxy = [
-            ...nuxt.options.proxy,
-            ...Object.keys(proxies).map((path) => `${options.baseUrl}${path}`)
-          ]
-        }
-        else {
-          nuxt.options.proxy = {
-            ...nuxt.options.proxy,
-            ...proxies
+      // If Nuxt2, configure and install the @nuxtjs/proxy module.
+      if (isNuxt2()) {
+        // If there are existing proxy settings, merge in the appropriate format.
+        if (nuxt.options.proxy) {
+          if (Array.isArray(nuxt.options.proxy)) {
+            nuxt.options.proxy = [
+              ...this.options.proxy,
+              ...Object.keys(proxies).map((path) => `${options.baseUrl}${path}`)
+            ]
+          }
+          else {
+            nuxt.options.proxy = {
+              ...nuxt.options.proxy,
+              ...proxies
+            }
           }
         }
+        // Otherwise just set the the required proxies.
+        else {
+          nuxt.options.proxy = proxies
+        }
+
+        // Enable the Proxy module.
+        await installModule('@nuxtjs/proxy', {}, nuxt)
       }
-      // Otherwise just set the the required proxies.
+
+      // Otherwise use the Nuxt 3 Nitro Route Rules.
+      // @TODO - Confirm this actually works.
       else {
-        nuxt.options.proxy = proxies
+        Object.keys(proxies).forEach((route) => extendRouteRules(`${route}/**`, { proxy: `${options.baseUrl}${route}/**` }))
       }
-
-      // Enable the Proxy module.
-      await installModule('@nuxtjs/proxy', {}, nuxt)
-    }
-
-    // Install the @nuxtjs/axios module.
-    if (!options.axios) {
-      nuxt.options.axios = {
-        baseURL: options.baseUrl,
-        proxy: !!options.proxy?.api,
-        ...nuxt.options.axios
-      }
-      await installModule('@nuxtjs/axios', {}, nuxt)
     }
 
     // Register components directories.
     nuxt.hook('components:dirs', dirs => {
-      dirs.push({ path: join(__dirname, '../dist/components') })
+      dirs.push({
+        path: resolve(__dirname, '../dist/components'),
+        global: true
+      })
     })
 
-    // Add plugin.
+    // Add $druxt plugin.
     addPluginTemplate({
       src: resolve(__dirname, '../templates/plugin.js'),
       fileName: 'druxt.js',
-      options
+      options: {
+        ...options,
+        isNuxt2
+      }
     })
 
-    // Make the $axios and $druxt plugins the first to load.
-    const extendPlugins = nuxt.options.extendPlugins
-    nuxt.options.extendPlugins = (plugins) => {
-      // Run the user defined extendPlugins function if defined.
-      plugins = typeof extendPlugins === 'function' ? extendPlugins(plugins) : plugins
+    // Install the @nuxtjs/axios module for Nuxt 2.
+    if (isNuxt2()) {
+      if (!options.axios) {
+        nuxt.options.axios = {
+          baseURL: options.baseUrl,
+          proxy: !!options.proxy?.api,
+          ...nuxt.options.axios
+        }
+        await installModule('@nuxtjs/axios', {}, nuxt)
+      }
 
-      // Extract the $axios plugin.
-      const axiosIndex = plugins.findIndex(({ src }) => src === normalize(`${nuxt.options.buildDir}/axios.js`))
-      const axiosPlugin = plugins[axiosIndex]
-      plugins.splice(axiosIndex, 1)
+      // Make the $axios and $druxt plugins the first to load.
+      const extendPlugins = nuxt.options.extendPlugins
+      nuxt.options.extendPlugins = (plugins) => {
+        // Run the user defined extendPlugins function if defined.
+        plugins = typeof extendPlugins === 'function' ? extendPlugins(plugins) : plugins
 
-      // Extract the $druxt plugin.
-      const druxtIndex = plugins.findIndex(({ src }) => src === normalize(`${nuxt.options.buildDir}/druxt.js`))
-      const druxtPlugin = plugins[druxtIndex]
-      plugins.splice(druxtIndex, 1)
+        // Extract the $axios plugin.
+        const axiosIndex = plugins.findIndex(({ src }) => src === normalize(`${nuxt.options.buildDir}/axios.js`))
+        if (axiosIndex === -1) throw new Error('The $axios plugin is missing.')
+        const axiosPlugin = plugins[axiosIndex]
+        plugins.splice(axiosIndex, 1)
 
-      // Re-add the plugins.
-      plugins = [axiosPlugin, druxtPlugin, ...plugins]
+        // Extract the $druxt plugin.
+        const druxtIndex = plugins.findIndex(({ src }) => src === normalize(`${nuxt.options.buildDir}/druxt.js`))
+        // if (druxtIndex === -1) throw new Error('The $druxt plugin is missing.')
+        const druxtPlugin = plugins[druxtIndex]
+        plugins.splice(druxtIndex, 1)
 
-      return plugins.filter((o) => o)
+        // Re-add the plugins.
+        plugins = [axiosPlugin, druxtPlugin, ...plugins]
+
+        return plugins.filter((o) => o)
+      }
+
+      // Enable Vuex Store.
+      nuxt.options.store = true
+
+      // Enable components auto-discovery by default.
+      nuxt.options.components = nuxt.options.components ?? true
+
+      // Add Vuex plugin.
+      addPluginTemplate({
+        src: resolve(__dirname, '../templates/store.js'),
+        fileName: 'store/druxt.js',
+        options
+      })
     }
 
-    // Add Vuex plugin.
-    addPluginTemplate({
-      src: resolve(__dirname, '../templates/store.js'),
-      fileName: 'store/druxt.js',
-      options
-    })
-
-    // Enable Vuex Store.
-    nuxt.options.store = true
-
-    // Enable components auto-discovery by default.
-    nuxt.options.components = nuxt.options.components ?? true
 
     // Get the version from the root directories package.json.
     const rootDir = __dirname.endsWith('/src/nuxt') ? '../..' : '..'
     const version = require(join(__dirname, `${rootDir}/package.json`)).version
 
-    // Add CLI badge.
-    nuxt.options.cli.badgeMessages.push(`${chalk.blue.bold('Druxt')} @ v${version}`)
-    nuxt.options.cli.badgeMessages.push(`${chalk.bold('API:')} ${chalk.blue.underline(options.baseUrl + options.endpoint)}`)
+    // Add Druxt module info to CLI.
+    if (isNuxt2()) {
+      nuxt.options.cli.badgeMessages.push(`${chalk.blue.bold('Druxt')} @ v${version}`)
+      nuxt.options.cli.badgeMessages.push(`${chalk.bold('API:')} ${chalk.blue.underline(options.baseUrl + options.endpoint)}`)
+    }
+    else {
+      // @TODO: Chalk seems to not work in Nuxt 3.
+      console.log(`Druxt ${version}`)
+      console.log(`  \u279C API: ${options.baseUrl + options.endpoint}\n`)
+    }
 
     // Development mode features.
-    if (nuxt.options.dev) {
-      // Add the template stubber server middleware.
-      nuxt.options.serverMiddleware.push({
-        path: '/_druxt/template',
-        handler: 'druxt/dist/server-middleware/template.mjs'
-      })
+    // @TODO - Development mode features need to be re-added.
+    // if (nuxt.options.dev) {
+    //   // Add the template stubber server middleware.
+    //   nuxt.options.serverMiddleware.push({
+    //     path: '/_druxt/template',
+    //     handler: 'druxt/dist/server-middleware/template.mjs'
+    //   })
 
-      // Add the Vue devtools plugin.
-      addPluginTemplate({
-        src: resolve(__dirname, '../dist/plugins/devtools.mjs'),
-        fileName: 'druxt-devtools.js'
-      })
-    }
+    //   // Add the Vue devtools plugin.
+    //   addPluginTemplate({
+    //     src: resolve(__dirname, '../dist/plugins/devtools.mjs'),
+    //     fileName: 'druxt-devtools.js'
+    //   })
+    // }
 
     // Nuxt Storybook.
     nuxt.hook('storybook:config', async ({ stories }) => {

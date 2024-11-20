@@ -1,10 +1,17 @@
 import { DruxtClient } from 'druxt'
 
+<% const { isNuxt2 } = options; delete options.isNuxt2 %>
+<% if (typeof isNuxt2 === 'function' && isNuxt2()) { %>
+// Druxt Plugin for Nuxt 2.
 export default ({ app }, inject) => {
+<% } else { %>
+// Druxt Plugin for Nuxt 3.
+export default defineNuxtPlugin((app) => {
+<% } %>
   const options = <%= JSON.stringify(options) %>
 
   // Disable the proxy for server side requests.
-  if (!process.client && (options.proxy || {}).api) {
+  if (!process.client && options.proxy?.api) {
     options.proxy.api = false
   }
 
@@ -19,5 +26,12 @@ export default ({ app }, inject) => {
 
   const druxt = new DruxtClient(options.baseUrl, options)
   druxt.settings = options
+<% if (typeof isNuxt2 === 'function' && isNuxt2()) { %>
   inject('druxt', druxt)
 }
+<% } else { %>
+  return {
+    provide: { druxt }
+  }
+})
+<% } %>

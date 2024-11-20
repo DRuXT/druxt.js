@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { stringify } from 'querystring'
-import consola from 'consola'
+// import { useLogger } from '@nuxt/kit'
+import { consola } from 'consola'
 
 /**
  * The Druxt JSON:API client.
@@ -23,7 +24,7 @@ class DruxtClient {
   constructor(baseUrl, options = {}) {
     // Consola logger.
     this.log = consola.create({ defaults: {
-      tag: 'DruxtClient'
+      tag: 'druxt'
     }})
 
     // Check for URL.
@@ -351,14 +352,18 @@ class DruxtClient {
    * @returns {object} The resource index object or the specified resource.
    */
   async getIndex(resource, prefix) {
-    if ((this.index || {})[prefix] && !resource) {
+    // If the index is already loaded and there's no resource specified, return.
+    if (this.index?.[prefix] && !resource) {
       return this.index[prefix]
     }
 
-    if ((this.index || {})[prefix] && resource) {
+    // If the index is already loaded and there's a resource specified, return
+    // the resource.
+    if (this.index?.[prefix] && resource) {
       return this.index[prefix][resource] ? this.index[prefix][resource] : false
     }
 
+    // Fetch the JSON:API index data.
     const url = [prefix, this.options.endpoint].join('')
     const { data } = await this.get(url)
     let index = data.links
@@ -410,6 +415,7 @@ class DruxtClient {
     // Set index.
     this.index[prefix] = index
 
+    // Return specific resource or all resources from the index.
     return resource ? this.index[prefix][resource] || false : this.index[prefix]
   }
 
