@@ -29,7 +29,8 @@ export { DruxtClient } from './client'
  * @name DruxtStore
  * @see {@link /api/packages/druxt/stores/druxt|DruxtStore}
  */
-export { DruxtStore } from './stores/druxt'
+// @TODO - Re-implement the DruxtStore to work with Vuex or Pinia depending.
+// export { DruxtStore } from './stores/druxt'
 
 /**
  * Default function to alert user to incorrectly installed module.
