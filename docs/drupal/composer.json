@@ -8,28 +8,37 @@
         "docs": "https://druxtjs.org",
         "chat": "https://discord.druxtjs.org"
     },
-    "repositories": [
-        {
+    "repositories": {
+        "drupal": {
             "type": "composer",
-            "url": "https://packages.drupal.org/8"
+            "url": "https://packages.drupal.org/8",
+            "exclude": [
+                "drupal/druxt"
+            ]
+        },
+        "drupal/druxt": {
+            "type": "git",
+            "url": "https://git.drupalcode.org/issue/druxt-3429976.git"
         }
-    ],
+    },
     "require": {
         "composer/installers": "^2.3.0",
         "cweagans/composer-patches": "^1.7.3",
         "drupal-tome/tome_drush": "dev-master",
-        "drupal/core-composer-scaffold": "^10",
-        "drupal/core-project-message": "^10",
-        "drupal/core-recommended": "^10",
+        "drupal/core-composer-scaffold": "11.1.0",
+        "drupal/core-project-message": "11.1.0",
+        "drupal/core-recommended": "11.1.0",
         "drupal/decoupled_router": "2.0.5",
-        "drupal/druxt": "^1.2.0",
+        "drupal/druxt": "dev-3429976-d11_ready",
         "drupal/jsonapi_hypermedia": "^1.10.0",
-        "drupal/simple_oauth": "^5.2.5",
-        "drupal/tome": "^1.12.0",
-        "drush/drush": "^12"
+        "drupal/jsonapi_menu_items": "^1.2",
+        "drupal/jsonapi_resources": "^1.2",
+        "drupal/simple_oauth": "^6.0@beta",
+        "drupal/tome": "^1.13",
+        "drush/drush": "^13"
     },
     "require-dev": {
-        "drupal/core-dev": "^10"
+        "drupal/core-dev": "11.1.0"
     },
     "conflict": {
         "drupal/drupal": "*"
@@ -40,12 +49,13 @@
         "sort-packages": true,
         "allow-plugins": {
             "composer/installers": true,
-            "drupal/core-composer-scaffold": true,
-            "drupal/core-project-message": true,
             "cweagans/composer-patches": true,
             "dealerdirect/phpcodesniffer-composer-installer": true,
+            "drupal/core-composer-scaffold": true,
+            "drupal/core-project-message": true,
             "php-http/discovery": true,
-            "phpstan/extension-installer": true
+            "phpstan/extension-installer": true,
+            "tbachert/spi": true
         }
     },
     "extra": {
@@ -75,7 +85,10 @@
                 "https://www.drupal.org/project/druxt/issues/3467742": "https://git.drupalcode.org/project/druxt/-/merge_requests/14.diff"
             },
             "drupal/jsonapi_menu_items": {
-                "https://www.drupal.org/project/jsonapi_menu_items/issues/3192576": "https://www.drupal.org/files/issues/2023-02-10/3192576-18.patch"
+                "https://www.drupal.org/project/jsonapi_menu_items/issues/3192576": "https://www.drupal.org/files/issues/2024-09-03/3192576-23-1.patch"
+            },
+            "drupal/jsonapi_resources": {
+                "https://www.drupal.org/project/jsonapi_resources/issues/3461125": "https://git.drupalcode.org/project/jsonapi_resources/-/merge_requests/18.diff"
             }
         }
     }

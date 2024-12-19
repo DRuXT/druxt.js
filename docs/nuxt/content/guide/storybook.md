@@ -1,21 +1,20 @@
 ---
-title: Storybook
+title: Storybook Integration
 weight: -4
 ---
 
-> Druxt provides zero-config, auto generated Storybook integration with live data.
+## Storybook Integration
 
-![DruxtBlocks Storybook integration](/images/druxt-block-storybook.png)
+> Druxt provides zero-config, auto-generated Storybook integration with live data.
+![DruxtBlocks Storybook Integration](/images/druxt-block-storybook.png)
 
-## Features
+### Features
 
-* Access to Druxt components, modules, stores and more within Storybook.
+* Access to Druxt components, modules, stores, and more within Storybook.
 * Auto-generated stories based on live data.
-* Support for **Blocks**, **Entities**, **Menus** and **Views**.
+* Support for **Blocks**, **Entities**, **Menus**, and **Views**.
 
-* * *
-
-## Getting started
+### Getting Started
 
 1. Install the [Nuxt Storybook module](https://storybook.nuxtjs.org).
 
@@ -28,5 +27,3 @@ weight: -4
    ```sh
    npx nuxt storybook
    ```
-
-* * *

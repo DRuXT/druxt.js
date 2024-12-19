@@ -3,44 +3,53 @@ title: Introduction
 weight: -10
 ---
 
-# DruxtJS
+## DruxtJS: The Fully Decoupled Drupal Framework
 
-## The Fully Decoupled Drupal Framework
+DruxtJS is a powerful framework designed to simplify the development of fully decoupled Drupal sites using Nuxt.js. By combining the robust content management capabilities of Drupal with the modern web development features of Nuxt.js, developers can create sophisticated and elegant user experiences.
 
-### What is Druxt?
+> **TL;DR** Druxt = DRUpal + nUXT, empowering you to leverage the best of both worlds in your projects.
 
-Druxt is a framework for building Fully Decoupled Drupal and Nuxt.js applications and sites. It allows you to leverage the content modelling and management power of Drupal, and build elegant user experiences with Nuxt.js.
+---
 
-> TL;DR: Druxt = DRUpal + nUXT.
+### Getting Started with DruxtJS
 
-* * *
+To begin your journey with DruxtJS, follow these steps based on your specific needs:
 
-## Getting started
+1. **Building a Fully Decoupled Drupal Site**:
+   - Visit the [Getting started with DruxtSite](/modules/site/getting-started) guide for comprehensive instructions.
+2. **Developing a Nuxt Application with Druxt Modules**:
+   - Refer to the [Getting started with Druxt](/guide/getting-started) documentation for detailed guidance.
+3. **Integrating Druxt Internals into Your Node.js Application**:
+   - Explore the [API Documentation](/api) for in-depth information on how to utilize Druxt's internal components.
 
-### Make Druxt work for you:
+---
 
-- If you want to build a fully decoupled Drupal site, see [Getting started with DruxtSite](/modules/site/getting-started).
-- If you want to build a Nuxt application with Druxt modules, see [Getting started with Druxt](/guide/getting-started).
-- If you want to use Druxt internals in your Node application, check out the [API Documentation](/api).
+### Understanding DruxtJS Modules
 
-* * *
+DruxtJS is built upon two robust frameworks, Drupal and Nuxt.js, each with its own set of modules that can be seamlessly integrated with Druxt modules. These modules are designed to provide a wide range of functionalities:
 
-## Modules
+* **Nuxt Modules**: Enhance your application with powerful features from the [Nuxt modules list](https://modules.nuxtjs.org/).
+* **Drupal Modules**: Extend your site's capabilities with modules from the [Drupal modules list](https://www.drupal.org/project/project_module).
+* **Druxt Modules**: Bridge the gap between Drupal and Nuxt.js, making decoupled development easier. Browse the [Druxt modules list](/modules) for more information.
 
-Druxt is built on two frameworks, Drupal and Nuxt.js, both with their own modules which can be used alongside Druxt modules.
+---
 
-Druxt modules provide Nuxt modules, plugins, components and more to bridge the gap and make Decoupled development easier.
+### Customizing Druxt Components
 
-- For Druxt modules, see the [Druxt modules list](/modules).
-- For Drupal modules, see the [Drupal modules list](https://www.drupal.org/project/project_module).
-- For Nuxt modules, see the [Nuxt modules list](https://modules.nuxtjs.org/).
+Customizing the appearance of your Druxt components is straightforward and flexible. Druxt acts as a Vue.js theme layer for Drupal, allowing you to:
 
-* * *
+* Utilize **Wrapper Components** to encapsulate and customize your content.
+* Leverage Vue.js **Slots** for injecting dynamic content into your components.
+* Apply **$attrs** and **props** to fine-tune the behavior and appearance of your components.
 
-## Theming Druxt components
+For a deeper dive into customizing Druxt components, consult the [Theming guide](/guide/theming), which provides detailed instructions and best practices for customizing your site's theme.
 
-> Druxt is like a Vue.js theme layer for Drupal.
+---
 
-Druxt components can be themed using **Wrapper components** alongside Vue.js **slots**, **$attrs** and **props**.
+### Additional Resources
 
-* For more details, see the [Theming guide](/guide/theming).
+To further support your development journey with DruxtJS:
+
+* **Community Support**: Join the growing DruxtJS community to connect with other developers, share knowledge, and get support.
+* **Documentation**: Explore the comprehensive documentation available for DruxtJS, including guides, tutorials, and API references.
+* **Examples and Demos**: Check out example projects and demos that showcase the capabilities of DruxtJS in real-world scenarios.

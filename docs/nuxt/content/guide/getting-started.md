@@ -3,101 +3,93 @@ title: Getting started with Druxt.js
 weight: -9
 ---
 
-### Getting started with Druxt.js
+## Getting Started with Druxt.js
 
-> Druxt is a Fully Decoupled Drupal framework.
+Druxt.js is a framework that seamlessly integrates Drupal, a popular open-source content management system (CMS), with Nuxt.js, a powerful Vue.js framework. This integration allows developers to build modern, headless, and decoupled websites using Drupal as the backend and Nuxt.js as the frontend.
 
-Druxt gives you the tools to connect your Nuxt.js frontend to your Drupal JSON:API backend.
+## Requirements
 
-* * *
+To develop a Druxt application, you need both a Drupal (backend) and a Nuxt (frontend). Each codebase can reside in its own directory within a single repository or be housed in separate repositories. We recommend using Docker to manage both environments for local development.
 
-## Getting started
+### Setting Up Drupal
 
-All Druxt sites and applications need both Drupal (backend) and Nuxt (frontend) to be installed.
-
-Each codebase can live in its own directory within a single repository, or exist in seperate repositories.
-
-* * *
-
-### Drupal
-
-1. [Install Drupal](https://www.drupal.org/docs/installing-drupal)
-
-2. Download the Drupal [Druxt module](https://www.drupal.org/project/druxt):
+1. **Install Drupal**:
 
     ```sh
-    composer require drupal/druxt
+    mkdir druxt-getting-started
+    cd druxt-getting-started
+    mkdir backend
+    cd backend
+    ddev config --project-type drupal --docroot web
     ```
 
-3. Install the module:
-   ![Install the module](/images/drupal-install.png)
+2. **Download and Install the Druxt Module**:
+    - Download the [Druxt module](https://www.drupal.org/project/druxt) using Composer:
 
-4. Add the "**access druxt resources**" permission to a user/role:
-   ![Druxt 'access druxt resources' permission](/images/drupal-permissions.png)
+      ```sh
+      composer require drupal/druxt
+      ```
 
-* * *
+    - Install the module via Drupal's admin interface:
+      ![Install the module](/images/drupal-install.png)
 
-### Nuxt
+3. **Grant Permissions**:
+    - Add the "**access druxt resources**" permission to a user or role:
+      ![Druxt 'access druxt resources' permission](/images/drupal-permissions.png)
 
-1. [Install Nuxt](https://nuxtjs.org/guide/installation/)
+### Setting Up Nuxt
 
-   ```sh
-   npx create-nuxt-app [destination]
-   ```
+1. **Install Nuxt**:
 
-2. Install the Druxt module:
+    ```sh
+    npx create-nuxt-app [destination]
+    ```
+
+2. **Install the Druxt Module**:
 
     ```sh
     npm i druxt
     ```
 
-3. Add the module and configuration to `nuxt.config.js`:
+3. **Configure `nuxt.config.js`**:
+    Add the module and configuration to your `nuxt.config.js` file:
 
     ```js
     export default {
       modules: [
         'druxt'
       ],
-
       druxt: {
-        baseUrl: 'https://demo-api.druxtjs.org'
+        baseUrl: 'https://demo-api.druxtjs.org'  // Replace with your own Drupal backend URL
       }
     }
     ```
 
-    \* _**Note:** Replace `https://demo-api.druxtjs.org` with your own Drupal backend._
+4. **Start Nuxt**:
 
-4. Start Nuxt: `npm run dev`
+    ```sh
+    npm run dev
+    ```
 
-* * *
+## Next Steps
 
-## Next steps
+Druxt offers tools to help you build a fully decoupled Drupal application or site.
 
-Druxt provides tools to help build your Fully Decoupled Drupal application or site.
+### Drupal JSON:API Client
 
-* * *
-
-### Drupal JSON:API client
-
-The `DruxtClient` is a Drupal flavoured JSON:API client, it is the primary communication layer to access your Drupal content and configuration.
-
-The client is used by the Nuxt Vuex store, but can also be used manually in any Node application:
+The `DruxtClient` is a Drupal-flavored JSON:API client, serving as the primary communication layer to access your Drupal content and configuration. The client is used by the Nuxt Vuex store but can also be manually integrated into any Node.js application:
 
 ```js
 import { DruxtClient } from 'druxt'
 const client = new DruxtClient('https://demo-api.druxtjs.org')
 ```
 
-- For further information, read the [JSON:API Client guide](/guide/client).
-- For more details, see the [DruxtClient API documentation](/api/packages/druxt/client).
+- For more information, refer to the [JSON:API Client guide](/guide/client).
+- For detailed API documentation, see the [DruxtClient API documentation](/api/packages/druxt/client).
 
-* * *
+### Nuxt Vuex Store
 
-### Nuxt Vuex store
-
-The `DruxtStore` is a Vuex store that interfaces with the primary DruxtClient instance in your Nuxt application to retrieve and cache your Drupal JSON:API resources.
-
-The store is used by the Druxt modules, but can also be used manually from within your Vue components as required:
+The `DruxtStore` is a Vuex store that interfaces with the primary DruxtClient instance in your Nuxt application to retrieve and cache Drupal JSON:API resources. The store is used by the Druxt modules but can also be manually accessed from within your Vue components:
 
 ```vue
 <script>
@@ -112,15 +104,12 @@ export default {
 </script>
 ```
 
-- For more details, see the [DruxtStore API documentation](/api/packages/druxt/stores/druxt).
+- For detailed API documentation, see the [DruxtStore API documentation](/api/packages/druxt/stores/druxt).
 
-* * *
+### Druxt Modules
 
-### Druxt modules
+Druxt modules provide targeted decoupled Drupal functionality via Vue components, Vuex stores, and other helper tools. These modules are installed and configured in your `nuxt.config.js` file as required:
 
-Druxt modules provide targeted decoupled Drupal functionality via Vue components, Vuex stores and other helper tools.
-
-Modules are installed and configured via the `nuxt.config.js` file as required:
 ```js
 export default {
   modules: ['druxt-site']

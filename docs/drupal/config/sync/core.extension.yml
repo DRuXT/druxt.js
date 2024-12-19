@@ -33,6 +33,7 @@ module:
   jsonapi_views: 0
   language: 0
   layout_builder: 0
+  layout_builder_expose_all_field_blocks: 0
   layout_discovery: 0
   link: 0
   locale: 0
@@ -47,7 +48,6 @@ module:
   path: 0
   path_alias: 0
   responsive_image: 0
-  sdc: 0
   search: 0
   serialization: 0
   shortcut: 0

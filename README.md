@@ -1,4 +1,6 @@
-# DruxtJS; A bridge between frameworks.
+# DruxtJS
+
+A bridge between frameworks.
 
 [![npm](https://badgen.net/npm/v/druxt)](https://www.npmjs.com/package/druxt)
 [![CircleCI](https://circleci.com/gh/druxt/druxt.js.svg?style=svg)](https://circleci.com/gh/druxt/druxt.js)
@@ -6,22 +8,19 @@
 [![Known Vulnerabilities](https://snyk.io/test/github/druxt/druxt.js/badge.svg?targetFile=package.json)](https://snyk.io/test/github/druxt/druxt.js?targetFile=package.json)
 [![codecov](https://codecov.io/gh/druxt/druxt.js/branch/develop/graph/badge.svg)](https://codecov.io/gh/druxt/druxt.js)
 
-
 > Druxt = DRUpal + nUXT = Fully Decoupled Drupal.
-
 
 ## Links
 
-- Documentation: https://druxtjs.org
-- Community Discord server: https://discord.druxtjs.org
-- Demo - Umami food magazine:
-  - https://umami.demo.druxtjs.org
-  - https://storybook.umami.demo.druxtjs.org
-- Quickstart repositories:
-  - https://github.com/druxt/quickstart-druxt-site
-  - https://github.com/druxt/quickstart-druxt-site-tome
-  - https://github.com/druxt/quickstart-druxt-serverless
-
+- **Documentation**: [https://druxtjs.org](https://druxtjs.org)
+- **Community Discord server**: [https://discord.druxtjs.org](https://discord.druxtjs.org)
+- **Demo - Umami food magazine**:
+  - [https://umami.demo.druxtjs.org](https://umami.demo.druxtjs.org)
+  - [https://storybook.umami.demo.druxtjs.org](https://storybook.umami.demo.druxtjs.org)
+- **Quickstart repositories**:
+  - [https://github.com/druxt/quickstart-druxt-site](https://github.com/druxt/quickstart-druxt-site)
+  - [https://github.com/druxt/quickstart-druxt-site-tome](https://github.com/druxt/quickstart-druxt-site-tome)
+  - [https://github.com/druxt/quickstart-druxt-serverless](https://github.com/druxt/quickstart-druxt-serverless)
 
 ## Features
 
@@ -33,8 +32,7 @@
 - Support for multilingual content.
 - API and File proxy.
 
-Learn more at https://druxtjs.org
-
+Learn more at [https://druxtjs.org](https://druxtjs.org).
 
 ## Core modules
 
@@ -47,7 +45,6 @@ Learn more at https://druxtjs.org
 - `druxt-site` - Out-of-the-box decoupled Drupal Site
 - `druxt-views` - Decoupled Views
 
-
 ## Support
 
 Find support or get involved in building Druxt via the community channels:
@@ -55,16 +52,14 @@ Find support or get involved in building Druxt via the community channels:
 - [DruxtJS Discord server](https://discord.druxtjs.org)
 - **#druxt** Slack channel on [Drupal.org slack](https://drupal.org/slack)
 
-
 ## Contributing
 
-Druxt is an open source project, built by the comunity for the community.
-
-See the [Contributing guide](./CONTRIBUTING.md) for details on how to #get-involved.
+Druxt is an open source project, built by the community for the community.
+See the [Contributing guide](./CONTRIBUTING.md) for details on how to get involved.
 
 ### Cloud development
 
-This repository is setup for development in the cloud using [gitpod.io](https://gitpod.io), to get started, click the link below, or navigate to: https://gitpod.io/#https://github.com/druxt/druxt.js
+This repository is set up for development in the cloud using [gitpod.io](https://gitpod.io). To get started, click the link below or navigate to: [https://gitpod.io/#https://github.com/druxt/druxt.js](https://gitpod.io/#https://github.com/druxt/druxt.js)
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/druxt/druxt.js)
 
