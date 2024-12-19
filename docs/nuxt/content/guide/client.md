@@ -5,20 +5,18 @@ weight: 5
 
 # DruxtClient
 
-The DruxtClient is the communication layer between Nuxt and the Drupal JSON:API.
-
-It provides methods to get JSON:API Resources and Collection of resources from the Drupal server using the [Axios](https://www.npmjs.com/package/axios) library.
+The **DruxtClient** serves as the communication layer between Nuxt and the Drupal JSON:API. It provides methods to fetch JSON:API resources and collections from your Drupal server using the [Axios](https://www.npmjs.com/package/axios) library.
 
 ## Setup
 
-The Client requires the `baseUrl` for your Drupal backend:
+To use the DruxtClient, you need to initialize it with the `baseUrl` of your Drupal backend:
 
 ```js
 const { DruxtClient } = require('druxt')
 const druxt = new DruxtClient('https://demo-api.druxtjs.org')
 ```
 
-It also provides an options object to configure the client:
+You can also configure the client using an options object. For example, you can set custom headers or specify a different JSON:API endpoint:
 
 ```js
 const druxt = new DruxtClient('https://demo-api.druxtjs.org', {
@@ -29,85 +27,104 @@ const druxt = new DruxtClient('https://demo-api.druxtjs.org', {
 })
 ```
 
-See the [API documentation](/api/packages/druxt/client) for more details.
+For more configuration options, refer to the [API documentation](/api/packages/druxt/client).
 
-## Getting a resource
+## Getting a Resource
 
-The `getResource` method requires the resource `type` and `id`, and has an optional `query` and `prefix` parameter.
+The `getResource` method allows you to fetch a specific resource by its type and ID. It accepts optional parameters for querying and localization.
 
-_Get a page._
+### Example Usage
+
+#### Get a Page
+
 ```js
-druxt.getResource('node--page', 'd8dfd355-7f2f-4fc3-a149-288e4e293bdd').then(resource => {
-  // Do the thing.
-})
+druxt.getResource('node--page', 'd8dfd355-7f2f-4fc3-a149-288e4e293bdd')
+  .then(resource => {
+    // Process the resource.
+  })
 ```
 
-_Get a page's title._
+#### Get a Page's Title
+
 ```js
 druxt.getResource(
   'node--page',
   'd8dfd355-7f2f-4fc3-a149-288e4e293bdd',
   'fields[node--page]=title'
-).then(resource => {
-  // Do the thing.
-})
+)
+  .then(resource => {
+    // Process the resource.
+  })
 ```
 
-_Get a translated page._
+#### Get a Translated Page
+
 ```js
 druxt.getResource(
   'node--page',
-  'd8dfd355-7f2f-4fc3-a149-288e4e293bdd'
+  'd8dfd355-7f2f-4fc3-a149-288e4e293bdd',
   undefined,
   'es'
-).then(resource => {
-  // Do the thing.
-})
+)
+  .then(resource => {
+    // Process the resource.
+  })
 ```
 
-## Getting a collection of resources
+## Getting a Collection of Resources
 
-The `getCollection` method requires the resource type, and has an optional `query` and `prefix` parameter.
+The `getCollection` method fetches a collection of resources based on the provided type. It supports optional parameters for querying and localization.
 
-_Get a collection of recipes._
+### Example Usage
+
+#### Get a Collection of Recipes
+
 ```js
-druxt.getCollection('node--recipe').then(collection => {
-  // Do the thing.
-})
+druxt.getCollection('node--recipe')
+  .then(collection => {
+    // Process the collection.
+  })
 ```
 
-_Get the first 5 recipes._
+#### Get the First 5 Recipes
+
 ```js
-druxt.getCollection('node--recipe', 'page[limit]=5').then(collection => {
-  // Do the thing.
-})
+druxt.getCollection('node--recipe', 'page[limit]=5')
+  .then(collection => {
+    // Process the collection.
+  })
 ```
 
+#### Get the First 5 Recipes in Spanish
 
-_Get the first 5 recipes in spanish._
 ```js
 druxt.getCollection(
   'node--recipe',
   'page[limit]=5',
   'es'
-).then(collection => {
-  // Do the thing.
-})
+)
+  .then(collection => {
+    // Process the collection.
+  })
 ```
 
-## Getting all collections of a resource
+## Getting All Collections of a Resource
 
-The `getCollectionAll` takes the same parameters as the `getCollection` method, and will return an array of all collections.
+The `getCollectionAll` method fetches all collections of a specified resource type. It returns an array of collections, allowing you to iterate over them.
 
-_Get all recipes._
-```js
-druxt.getCollectionAll('node--recipe').then(collections => {
-  for (i in collections) {
-    const collection = collections[i]
-    for (j in collection.data) {
-      const resource = collection.data[j]
-      // Do the thing.
+### Example Usage
+
+#### Get All Recipes
+
+```jjs
+druxt.getCollectionAll('node--recipe')
+  .then(collections => {
+    for (let i = 0; i < collections.length; i++) {
+      const collection = collections[i];
+      for (let j = 0; j < collection.data.length; j++) {
+        const resource = collection.data[j];
+        // Process each resource.
+      }
     }
-  }
-})
+  })
 ```

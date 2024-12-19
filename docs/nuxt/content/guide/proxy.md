@@ -1,22 +1,15 @@
 ---
-title: Proxy
+title: Proxy Configuration
 weight: -5
 ---
 
-### Druxt and Proxies
+## Druxt and Proxies
 
-> Druxt provides API and File proxying using the @nuxtjs/proxy module.
+Druxt provides API and File proxying using the `@nuxtjs/proxy` module.
 
-* * *
+### API Proxy
 
-## API proxy
-
-As Druxt requires both a frontend and a backend server and communication occurs
-both from the frontend and the users browser, it's not uncommon to encounter
-Cross-origin resource sharing (CORS) issues.
-
-The API Proxy allows routing browser communication through the frontend to
-prevent CORS issues.
+API proxy functionality is crucial when communication occurs between the frontend, backend server, and user's browser. This can often lead to Cross-origin resource sharing (CORS) issues. The API Proxy routes browser communication through the frontend to prevent such issues.
 
 ```js
 export default {
@@ -26,15 +19,14 @@ export default {
 }
 ```
 
-Two proxy items will be created, one for the JSON:API endpoint, and the other
-for the decoupled router.
+When enabled, two proxy items will be created:
 
-* * *
+1. One for the JSON:API endpoint.
+2. Another for the decoupled router.
 
-## Files proxy
+### Files Proxy
 
-Druxt provides Drupal file proxying, to map your **/sites/default/files**
-directory to your frontend domain.
+Druxt also provides Drupal file proxying to map your **/sites/default/files** directory to your frontend domain.
 
 ```js
 export default {
@@ -44,7 +36,7 @@ export default {
 }
 ```
 
-If you are using a multi-site path, use the path as the value instead of `true`:
+For multi-site configurations, specify the path instead of using `true`:
 
 ```js
 export default {
@@ -54,12 +46,9 @@ export default {
 }
 ```
 
-* * *
+### Additional Proxy Settings
 
-## Aditional proxy settings
-
-Druxt uses the Nuxt Proxy module, additonal proxies can be set in
-**nuxt.config.js** and will be merged with the API and file proxy values.
+Druxt utilizes the Nuxt Proxy module. You can set additional proxies in **nuxt.config.js**, and they will be merged with the API and file proxy values.
 
 ```js
 export default {
@@ -75,4 +64,4 @@ export default {
 }
 ```
 
-For more details, see the [Nuxt Proxy module](https://github.com/nuxt-community/proxy-module).
+For more detailed information, please refer to the [Nuxt Proxy module documentation](https://github.com/nuxt-community/proxy-module).
